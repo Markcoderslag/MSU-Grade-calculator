@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
 // ── Assessment weights ────────────────────────────────────────────────────────
@@ -16,8 +18,7 @@ const double MAX_SCORE = 100.0;
 const int CREDIT_HOURS_PER_MODULE = 4;
 const int MODULES_PER_SEMESTER    = 4;
 
-// ── Input validation function ─────────────────────────────────────────────────
-// Keeps asking until the user enters a valid number between MIN_SCORE and MAX_SCORE
+// ── Input validation ──────────────────────────────────────────────────────────
 double readScore(const string& label)
 {
     double score;
@@ -47,26 +48,56 @@ double readScore(const string& label)
     return score;
 }
 
+// ── Weighted total ────────────────────────────────────────────────────────────
+double calculateModuleTotal(double quiz, double assignment, double project, double exam)
+{
+    return (quiz * QUIZ_WEIGHT)
+         + (assignment * ASSIGNMENT_WEIGHT)
+         + (project * PROJECT_WEIGHT)
+         + (exam * EXAM_WEIGHT);
+}
+
+// ── Grade lookup ──────────────────────────────────────────────────────────────
+// Lower-bound checks: 79.5 gets A-, and every total gets exactly one grade
+string getLetterGrade(double total)
+{
+    if (total >= 80)      return "A";
+    else if (total >= 75) return "A-";
+    else if (total >= 70) return "B+";
+    else if (total >= 65) return "B";
+    else if (total >= 60) return "B-";
+    else if (total >= 55) return "C+";
+    else if (total >= 50) return "C";
+    else if (total >= 46) return "C-";
+    else if (total >= 43) return "D+";
+    else if (total >= 40) return "D";
+    else                  return "F";
+}
+
+// ── Grade points lookup ───────────────────────────────────────────────────────
+double getGradePoints(const string& grade)
+{
+    if (grade == "A")       return 4.00;
+    else if (grade == "A-") return 3.67;
+    else if (grade == "B+") return 3.33;
+    else if (grade == "B")  return 3.00;
+    else if (grade == "B-") return 2.67;
+    else if (grade == "C+") return 2.33;
+    else if (grade == "C")  return 2.00;
+    else if (grade == "C-") return 1.67;
+    else if (grade == "D+") return 1.33;
+    else if (grade == "D")  return 1.00;
+    else                    return 0.00;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 int main()
 {
-    string studentName;
     string moduleName;
+    double quizScore, assignmentScore, projectScore, examScore;
+    double moduleTotal;
     string letterGrade;
-
-    int moduleNumber  = 0;
-    int studentNumber = 0;
-
-    double quizScore;
-    double assignmentScore;
-    double projectScore;
-    double examScore;
-
-    double moduleTotal = 0.0;
-    double gradePoints = 0.0;
-    double semesterGPA = 0.0;
-
-    bool isPassed = false;
+    double gradePoints;
 
     cout << "\nEnter module name: ";
     getline(cin, moduleName);
@@ -77,7 +108,16 @@ int main()
     projectScore    = readScore("Project");
     examScore       = readScore("Exam");
 
-    cout << "\nScores recorded successfully for " << moduleName << ".\n";
+    moduleTotal = calculateModuleTotal(quizScore, assignmentScore, projectScore, examScore);
+    moduleTotal = round(moduleTotal * 100) / 100;
+    letterGrade = getLetterGrade(moduleTotal);
+    gradePoints = getGradePoints(letterGrade);
+
+    cout << "\n-- Result for " << moduleName << " --\n";
+    cout << fixed << setprecision(2);
+    cout << "  Weighted total : " << moduleTotal << "\n";
+    cout << "  Letter grade   : " << letterGrade << "\n";
+    cout << "  Grade points   : " << gradePoints << "\n";
 
     return 0;
 }
