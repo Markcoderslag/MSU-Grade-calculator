@@ -93,5 +93,4 @@ msu-gpa-calculator/
 - The program uses console input only and has no GUI.
 
 ## Author
-
 <Anjana Prabath>
