@@ -92,59 +92,107 @@ double getGradePoints(const string& grade)
     else                    return 0.00;
 }
 
+// ── Continue prompt ───────────────────────────────────────────────────────────
+// Keeps asking until the user types y or n
+bool askToContinue()
+{
+    char answer;
+
+    while (true)
+    {
+        cout << "\nAdd another student? (y/n): ";
+        cin >> answer;
+        cin.ignore(1000, '\n');
+
+        if (answer == 'y' || answer == 'Y')
+            return true;
+        else if (answer == 'n' || answer == 'N')
+            return false;
+        else
+            cout << "Please type y or n.\n";
+    }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 int main()
 {
+    string studentName;
     string moduleName;
     double quizScore, assignmentScore, projectScore, examScore;
     double moduleTotal;
     string letterGrade;
     double gradePoints;
     bool   isPassed = false;
+    bool   addAnother = true;
+    int    studentNumber = 0;
 
-    // Running totals for the semester GPA
-    double weightedPointsSum = 0.0;   // sum of (grade points x credit hours)
-    int    totalCreditHours  = 0;     // sum of credit hours
+    // Two decimals for every number printed from here on
+    cout << fixed << setprecision(2);
 
-    for (int moduleNumber = 1; moduleNumber <= MODULES_PER_SEMESTER; moduleNumber++)
+    cout << "=== MSU Semester GPA Calculator ===\n";
+
+    while (addAnother)
     {
-        cout << "\n== Module " << moduleNumber << " of " << MODULES_PER_SEMESTER << " ==\n";
-        cout << "Enter module name: ";
-        getline(cin, moduleName);
+        studentNumber++;
 
-        cout << "-- Scores for " << moduleName << " --\n";
-        quizScore       = readScore("Quiz");
-        assignmentScore = readScore("Assignment");
-        projectScore    = readScore("Project");
-        examScore       = readScore("Exam");
+        // Running totals reset for each student
+        double weightedPointsSum = 0.0;
+        int    totalCreditHours  = 0;
 
-        // Clear the newline left by the last number so the next getline works
-        cin.ignore(1000, '\n');
+        cout << "\n########## Student " << studentNumber << " ##########\n";
+        cout << "Enter student name: ";
+        getline(cin, studentName);
 
-        moduleTotal = calculateModuleTotal(quizScore, assignmentScore, projectScore, examScore);
-        moduleTotal = round(moduleTotal * 100) / 100;
-        letterGrade = getLetterGrade(moduleTotal);
-        gradePoints = getGradePoints(letterGrade);
+        for (int moduleNumber = 1; moduleNumber <= MODULES_PER_SEMESTER; moduleNumber++)
+        {
+            cout << "\n== Module " << moduleNumber << " of " << MODULES_PER_SEMESTER << " ==\n";
+            cout << "Enter module name: ";
+            getline(cin, moduleName);
 
-        isPassed = (moduleTotal >= PASS_MARK) && (examScore >= EXAM_MINIMUM);
+            cout << "-- Scores for " << moduleName << " --\n";
+            quizScore       = readScore("Quiz");
+            assignmentScore = readScore("Assignment");
+            projectScore    = readScore("Project");
+            examScore       = readScore("Exam");
 
-        cout << fixed << setprecision(2);
-        cout << "\n-- Result for " << moduleName << " --\n";
-        cout << "  Weighted total : " << moduleTotal << "\n";
-        cout << "  Letter grade   : " << letterGrade << "\n";
-        cout << "  Grade points   : " << gradePoints << "\n";
-        cout << "  Status         : " << (isPassed ? "Passed" : "Failed") << "\n";
+            // Clear the newline left by the last number
+            cin.ignore(1000, '\n');
 
-        weightedPointsSum += gradePoints * CREDIT_HOURS_PER_MODULE;
-        totalCreditHours  += CREDIT_HOURS_PER_MODULE;
+            moduleTotal = calculateModuleTotal(quizScore, assignmentScore, projectScore, examScore);
+            moduleTotal = round(moduleTotal * 100) / 100;
+            letterGrade = getLetterGrade(moduleTotal);
+            gradePoints = getGradePoints(letterGrade);
+
+            // A module passes only if the total and the exam both reach their minimums
+            if (moduleTotal >= PASS_MARK && examScore >= EXAM_MINIMUM)
+            {
+                isPassed = true;
+            }
+            else
+            {
+                isPassed = false;
+            }
+
+            cout << "\n-- Result for " << moduleName << " --\n";
+            cout << "  Weighted total : " << moduleTotal << "\n";
+            cout << "  Letter grade   : " << letterGrade << "\n";
+            cout << "  Grade points   : " << gradePoints << "\n";
+            cout << "  Status         : " << (isPassed ? "Passed" : "Failed") << "\n";
+
+            weightedPointsSum += gradePoints * CREDIT_HOURS_PER_MODULE;
+            totalCreditHours  += CREDIT_HOURS_PER_MODULE;
+        }
+
+        double semesterGPA = weightedPointsSum / totalCreditHours;
+
+        cout << "\n==============================\n";
+        cout << "Student      : " << studentName << "\n";
+        cout << "Semester GPA : " << semesterGPA << "\n";
+        cout << "==============================\n";
+
+        addAnother = askToContinue();
     }
 
-    // Credit-weighted semester GPA
-    double semesterGPA = weightedPointsSum / totalCreditHours;
-
-    cout << "\n==============================\n";
-    cout << "Semester GPA: " << semesterGPA << "\n";
-    cout << "==============================\n";
-
+    cout << "\nThank you. Processed " << studentNumber << " student(s). Goodbye!\n";
     return 0;
 }
