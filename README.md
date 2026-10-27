@@ -94,4 +94,4 @@ msu-gpa-calculator/
 
 ## Author
 
-<Anjana Prabath>
+Anjana prabath 
