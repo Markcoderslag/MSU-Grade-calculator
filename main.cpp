@@ -52,31 +52,34 @@ double calculateModuleTotal(double quiz, double assignment, double project, doub
 string getLetterGrade(double total)
 {
     if (total >= 80)      return "A";
-    else if (total >= 75) return "A-";
-    else if (total >= 70) return "B+";
-    else if (total >= 65) return "B";
-    else if (total >= 60) return "B-";
-    else if (total >= 55) return "C+";
-    else if (total >= 50) return "C";
-    else if (total >= 46) return "C-";
-    else if (total >= 43) return "D+";
-    else if (total >= 40) return "D";
-    else                  return "F";
+          else if (total >= 75) return "A-";
+              else if (total >= 70) return "B+";
+                 else if (total >= 65) return "B";
+                  else if (total >= 60) return "B-";
+                        else if (total >= 55) return "C+";
+                           else if (total >= 50) return "C";
+                                else if (total >= 46) return "C-";
+                                  else if (total >= 43) return "D+";
+                                    else if (total >= 40) return "D";
+                                      else                  return "F";
 }
 
 double getGradePoints(const string& grade)
 {
     if (grade == "A")       return 4.00;
-    else if (grade == "A-") return 3.67;
-    else if (grade == "B+") return 3.33;
-    else if (grade == "B")  return 3.00;
-    else if (grade == "B-") return 2.67;
-    else if (grade == "C+") return 2.33;
-    else if (grade == "C")  return 2.00;
-    else if (grade == "C-") return 1.67;
-    else if (grade == "D+") return 1.33;
-    else if (grade == "D")  return 1.00;
-    else                    return 0.00;
+       else if (grade == "A-") return 3.67;
+        
+         else if (grade == "B+") return 3.33;
+        
+            else if (grade == "B")  return 3.00;
+        
+               else if (grade == "B-") return 2.67;
+                  else if (grade == "C+") return 2.33;
+                      else if (grade == "C")  return 2.00;
+                          else if (grade == "C-") return 1.67;
+                             else if (grade == "D+") return 1.33;
+                                else if (grade == "D")  return 1.00;
+                                     else                    return 0.00;
 }
 bool askToContinue()
 {
