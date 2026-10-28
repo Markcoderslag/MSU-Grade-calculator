@@ -3,24 +3,16 @@
 #include <cmath>
 #include <iomanip>
 using namespace std;
-
-// ── Assessment weights ────────────────────────────────────────────────────────
 const double QUIZ_WEIGHT       = 0.10;
 const double ASSIGNMENT_WEIGHT = 0.20;
 const double PROJECT_WEIGHT    = 0.30;
 const double EXAM_WEIGHT       = 0.40;
-
-// ── Score limits ──────────────────────────────────────────────────────────────
 const double MIN_SCORE = 0.0;
 const double MAX_SCORE = 100.0;
-
-// ── Module / semester info ────────────────────────────────────────────────────
 const int    CREDIT_HOURS_PER_MODULE = 4;
 const int    MODULES_PER_SEMESTER    = 4;
 const double PASS_MARK               = 40.0;
 const double EXAM_MINIMUM            = 40.0;
-
-// ── Input validation ──────────────────────────────────────────────────────────
 double readScore(const string& label)
 {
     double score;
@@ -49,8 +41,6 @@ double readScore(const string& label)
     }
     return score;
 }
-
-// ── Weighted total ────────────────────────────────────────────────────────────
 double calculateModuleTotal(double quiz, double assignment, double project, double exam)
 {
     return (quiz * QUIZ_WEIGHT)
@@ -59,8 +49,6 @@ double calculateModuleTotal(double quiz, double assignment, double project, doub
          + (exam * EXAM_WEIGHT);
 }
 
-// ── Grade lookup ──────────────────────────────────────────────────────────────
-// Lower-bound checks: 79.5 gets A-, and every total gets exactly one grade
 string getLetterGrade(double total)
 {
     if (total >= 80)      return "A";
@@ -76,7 +64,6 @@ string getLetterGrade(double total)
     else                  return "F";
 }
 
-// ── Grade points lookup ───────────────────────────────────────────────────────
 double getGradePoints(const string& grade)
 {
     if (grade == "A")       return 4.00;
@@ -91,9 +78,6 @@ double getGradePoints(const string& grade)
     else if (grade == "D")  return 1.00;
     else                    return 0.00;
 }
-
-// ── Continue prompt ───────────────────────────────────────────────────────────
-// Keeps asking until the user types y or n
 bool askToContinue()
 {
     char answer;
@@ -112,8 +96,6 @@ bool askToContinue()
             cout << "Please type y or n.\n";
     }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
 int main()
 {
     string studentName;
@@ -126,7 +108,6 @@ int main()
     bool   addAnother = true;
     int    studentNumber = 0;
 
-    // Two decimals for every number printed from here on
     cout << fixed << setprecision(2);
 
     cout << "=== MSU Semester GPA Calculator ===\n";
@@ -135,7 +116,7 @@ int main()
     {
         studentNumber++;
 
-        // Running totals reset for each student
+        
         double weightedPointsSum = 0.0;
         int    totalCreditHours  = 0;
 
@@ -155,7 +136,7 @@ int main()
             projectScore    = readScore("Project");
             examScore       = readScore("Exam");
 
-            // Clear the newline left by the last number
+            
             cin.ignore(1000, '\n');
 
             moduleTotal = calculateModuleTotal(quizScore, assignmentScore, projectScore, examScore);
@@ -163,7 +144,6 @@ int main()
             letterGrade = getLetterGrade(moduleTotal);
             gradePoints = getGradePoints(letterGrade);
 
-            // A module passes only if the total and the exam both reach their minimums
             if (moduleTotal >= PASS_MARK && examScore >= EXAM_MINIMUM)
             {
                 isPassed = true;
