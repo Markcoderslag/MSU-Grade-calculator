@@ -1,7 +1,7 @@
 # Testing and Debugging Log
 
 Program: MSU Semester GPA Calculator (`main.cpp`)
-Compiler: g++ (version: ____ )
+Compiler: g++
 Platform: Windows (VS Code terminal)
 
 ## 1. Test plan
@@ -10,50 +10,50 @@ Each test enters one module with the given scores. Expected values are calculate
 
 ### 1.1 Module calculation and boundaries
 
-| ID | Quiz | Assignment | Project | Exam | Expected total | Expected grade | Expected points | Expected status | Result |
-|----|------|------------|---------|------|----------------|----------------|-----------------|-----------------|--------|
-| M1 | 0 | 0 | 0 | 0 | 0.00 | F | 0.00 | Failed | |
-| M2 | 40 | 40 | 40 | 40 | 40.00 | D | 1.00 | Passed | |
-| M3 | 100 | 100 | 100 | 39 | 75.60 | A- | 3.67 | Failed (exam under 40) | |
-| M4 | 100 | 100 | 100 | 100 | 100.00 | A | 4.00 | Passed | |
-| M5 | 45 | 67 | 78 | 87 | 76.10 | A- | 3.67 | Passed | |
-| M6 | 100 | 100 | 100 | 30 | 72.00 | B+ | 3.33 | Failed (exam under 40) | |
+| ID | Quiz | Assignment | Project | Exam | Expected total | Expected grade | Expected points | Result status |
+|----|------|------------|---------|------|----------------|----------------|-----------------|-----------------|
+| M1 | 0 | 0 | 0 | 0 | 0.00 | F | 0.00 | Failed |
+| M2 | 40 | 40 | 40 | 40 | 40.00 | D | 1.00 | Passed |
+| M3 | 100 | 100 | 100 | 39 | 75.60 | A- | 3.67 | Failed (exam under 40) |
+| M4 | 100 | 100 | 100 | 100 | 100.00 | A | 4.00 | Passed |
+| M5 | 45 | 67 | 78 | 87 | 76.10 | A- | 3.67 | Passed |
+| M6 | 100 | 100 | 100 | 30 | 72.00 | B+ | 3.33 | Failed (exam under 40) |
 
 ### 1.2 Grade boundaries
 
 Each boundary is tested by entering the same value for all four scores. Because the weights add up to 1, the weighted total equals that value.
 
-| ID | Scores (all four) | Expected total | Expected grade | Expected points | Result |
-|----|-------------------|----------------|----------------|-----------------|--------|
-| B1 | 80 | 80.00 | A | 4.00 | |
-| B2 | 79.99 | 79.99 | A- | 3.67 | |
-| B3 | 74.99 | 74.99 | B+ | 3.33 | |
-| B4 | 45 | 45.00 | D+ | 1.33 | |
-| B5 | 39.99 | 39.99 | F | 0.00 | |
+| ID | Scores (all four) | Expected total | Expected grade | Expected points |
+|----|-------------------|----------------|----------------|-----------------|
+| B1 | 80 | 80.00 | A | 4.00 |
+| B2 | 79.99 | 79.99 | A- | 3.67 |
+| B3 | 74.99 | 74.99 | B+ | 3.33 |
+| B4 | 45 | 45.00 | D+ | 1.33 |
+| B5 | 39.99 | 39.99 | F | 0.00 |
 
 ### 1.3 Input validation
 
-| ID | Input | Expected behaviour | Result |
-|----|-------|--------------------|--------|
-| V1 | `-5` | Re-prompts with "Score must be between..." | |
-| V2 | `101` | Re-prompts | |
-| V3 | `abc` | Re-prompts with "Invalid input..." | |
-| V4 | `0` | Accepted | |
-| V5 | `100` | Accepted | |
-| V6 | `75.5` | Accepted | |
-| V7 | Empty line (just Enter) | Re-prompts | |
+| ID | Input | Expected behaviour |
+|----|-------|--------------------|
+| V1 | `-5` | Re-prompts with "Score must be between..." |
+| V2 | `101` | Re-prompts |
+| V3 | `abc` | Re-prompts with "Invalid input..." |
+| V4 | `0` | Accepted |
+| V5 | `100` | Accepted |
+| V6 | `75.5` | Accepted |
+| V7 | Empty line (just Enter) | Re-prompts |
 
 ### 1.4 Program flow
 
-| ID | Action | Expected behaviour | Result |
-|----|--------|--------------------|--------|
-| F1 | Module name with spaces (`Introduction to programming`) | Full name shown in results | |
-| F2 | Student name with spaces | Full name shown in summary | |
-| F3 | Two students, second has all 100s, same modules as first | Second GPA is 4.00 (no carry-over) | |
-| F4 | Continue prompt: `x` | Asks again | |
-| F5 | Continue prompt: `y` | Starts next student | |
-| F6 | Continue prompt: `n` | Goodbye message, exits | |
-| F7 | Semester GPA for modules A-, A, F, D | 2.17 | |
+| ID | Action | Expected behaviour |
+|----|--------|--------------------|
+| F1 | Module name with spaces (`Introduction to programming`) | Full name shown in results |
+| F2 | Student name with spaces | Full name shown in summary |
+| F3 | Two students, second has all 100s, same modules as first | Second GPA is 4.00 (no carry-over) |
+| F4 | Continue prompt: `x` | Asks again |
+| F5 | Continue prompt: `y` | Starts next student |
+| F6 | Continue prompt: `n` | Goodbye message, exits |
+| F7 | Semester GPA for modules A-, A, F, D | 2.17 |
 
 ### 1.5 Semester GPA check
 
